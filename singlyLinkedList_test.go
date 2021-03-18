@@ -1,6 +1,9 @@
 package ds
 
-import "testing"
+import (
+	"sync"
+	"testing"
+)
 
 func TestSLLAppend(t *testing.T) {
 	list := SinglyLinkedList{}
@@ -9,14 +12,43 @@ func TestSLLAppend(t *testing.T) {
 		list.Append(&Node{Value: element})
 	}
 
-	items := list.Items()
-	if len(items) != len(elements) {
-		t.Errorf("SinglyLinkedList.Items length error: want %d; got %d", len(items), len(elements))
+	if list.Size != len(elements) {
+		t.Errorf("SinglyLinkedList.Size error: want %d; got %d", len(elements), list.Size)
 	}
+
+	items := list.Items()
 
 	for i := 0; i < len(items); i++ {
 		if items[i] != elements[i] {
-			t.Errorf("node %d: want %d; got %d", i, items[i], elements[i])
+			t.Errorf("node %d: want %d; got %d", i, elements[i], items[i])
+		}
+	}
+}
+
+func TestSLLAppendAsync(t *testing.T) {
+	list := SinglyLinkedList{}
+	elements := []int{1, 2, 3, 4}
+
+	wg := &sync.WaitGroup{}
+	wg.Add(len(elements))
+
+	for _, element := range elements {
+		go func(element int, wg *sync.WaitGroup) {
+			list.Append(&Node{Value: element})
+			wg.Done()
+		}(element, wg)
+	}
+
+	wg.Wait()
+
+	if list.Size != len(elements) {
+		t.Errorf("SinglyLinkedList.Size error: want %d; got %d", len(elements), list.Size)
+	}
+
+	items := list.Items()
+	for i := 0; i < len(items); i++ {
+		if items[i] != elements[i] {
+			t.Errorf("node %d: want %d; got %d", i, elements[i], items[i])
 		}
 	}
 }
