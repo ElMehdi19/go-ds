@@ -1,6 +1,9 @@
 package ds
 
-import "sync"
+import (
+	"errors"
+	"sync"
+)
 
 type Node struct {
 	Value interface{}
@@ -13,8 +16,12 @@ type SinglyLinkedList struct {
 	mutex sync.Mutex
 }
 
-func (s *SinglyLinkedList) addToSize(n int) {
-	s.Size += n
+func (s *SinglyLinkedList) incrementSize() {
+	s.Size += 1
+}
+
+func (s *SinglyLinkedList) decrementSize() {
+	s.Size -= 1
 }
 
 func (s *SinglyLinkedList) isEmpty() bool {
@@ -34,7 +41,7 @@ func (s *SinglyLinkedList) Items() []interface{} {
 func (s *SinglyLinkedList) Append(n *Node) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-	defer s.addToSize(1)
+	defer s.incrementSize()
 	if s.isEmpty() {
 		s.Head = n
 		return
@@ -46,4 +53,27 @@ func (s *SinglyLinkedList) Append(n *Node) {
 	}
 
 	currentNode.Next = n
+}
+
+func (s *SinglyLinkedList) Delete(index int) error {
+	if index >= s.Size {
+		return errors.New("index out of range")
+	}
+
+	defer s.decrementSize()
+	if index == 0 {
+		s.Head = s.Head.Next
+		return nil
+	}
+
+	currentNode := s.Head
+	var previousNode *Node
+	for i := 0; i < index; i++ {
+		previousNode = currentNode
+		currentNode = currentNode.Next
+	}
+
+	previousNode.Next = currentNode.Next
+
+	return nil
 }

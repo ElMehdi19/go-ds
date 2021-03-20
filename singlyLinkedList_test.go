@@ -52,3 +52,42 @@ func TestSLLAppendAsync(t *testing.T) {
 		}
 	}
 }
+
+func TestSLLDelete(t *testing.T) {
+	list := SinglyLinkedList{}
+	elements := []int{1, 2, 3, 4}
+	for _, elem := range elements {
+		list.Append(&Node{Value: elem})
+	}
+
+	if err := list.Delete(5); err == nil {
+		t.Error("want out of range error; got nil")
+	}
+
+	list.Delete(0)
+	elements = elements[1:]
+	if list.Size != len(elements) {
+		t.Fatalf("list.Size error: want %d; got %d", len(elements), list.Size)
+	}
+
+	items := list.Items()
+	for i := 0; i < list.Size; i++ {
+		if items[i] != elements[i] {
+			t.Fatalf("item #%d: want %d; got %d", i, elements[i], items[i])
+		}
+	}
+
+	list.Delete(1)
+	elements = []int{2, 4}
+	if list.Size != len(elements) {
+		t.Fatalf("list.Size error: want %d; got %d", len(elements), list.Size)
+	}
+
+	items = list.Items()
+	for i := 0; i < list.Size; i++ {
+		if items[i] != elements[i] {
+			t.Fatalf("item #%d: want %d; got %d", i, elements[i], items[i])
+		}
+	}
+
+}
