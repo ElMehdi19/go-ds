@@ -141,3 +141,24 @@ func TestSSLPrepend(t *testing.T) {
 	list.Prepend(&Node{Value: 2})
 	testFn(&list, 2, 2)
 }
+
+func TestSSLReverse(t *testing.T) {
+	list := SinglyLinkedList{}
+	elements := []int{1, 2, 3, 4}
+	for _, element := range elements {
+		list.Append(&Node{Value: element})
+	}
+
+	list.Reverse()
+	if list.Size != 4 {
+		t.Fatalf("list.Size error: want %d; got %d", 4, list.Size)
+	}
+
+	items := list.Items()
+	elements = []int{4, 3, 2, 1}
+	for i := 0; i < list.Size; i++ {
+		if items[i] != elements[i] {
+			t.Errorf("item #%d: want %d; got %d", i, elements[i], items[i])
+		}
+	}
+}

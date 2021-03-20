@@ -118,3 +118,21 @@ func (s *SinglyLinkedList) Prepend(n *Node) {
 	n.Next = s.Head
 	s.Head = n
 }
+
+func (s *SinglyLinkedList) Reverse() {
+	if s.Size <= 1 {
+		return
+	}
+
+	currentNode := s.Head
+	var previousNode *Node
+	var tempNode *Node
+
+	for currentNode != nil {
+		tempNode = currentNode.Next
+		currentNode.Next = previousNode
+		previousNode = currentNode
+		currentNode = tempNode
+	}
+	s.Head = previousNode
+}
