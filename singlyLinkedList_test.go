@@ -64,32 +64,26 @@ func TestSLLDelete(t *testing.T) {
 		t.Error("want out of range error; got nil")
 	}
 
-	list.Delete(0)
-	elements = elements[1:]
-	if list.Size != len(elements) {
-		t.Fatalf("list.Size error: want %d; got %d", len(elements), list.Size)
-	}
+	testFn := func(list *SinglyLinkedList, elements []int) {
+		if list.Size != len(elements) {
+			t.Fatalf("list.Size error: want %d; got %d", len(elements), list.Size)
+		}
 
-	items := list.Items()
-	for i := 0; i < list.Size; i++ {
-		if items[i] != elements[i] {
-			t.Fatalf("item #%d: want %d; got %d", i, elements[i], items[i])
+		items := list.Items()
+		for i := 0; i < list.Size; i++ {
+			if items[i] != elements[i] {
+				t.Fatalf("item #%d: want %d; got %d", i, elements[i], items[i])
+			}
 		}
 	}
+
+	list.Delete(0)
+	elements = elements[1:]
+	testFn(&list, elements)
 
 	list.Delete(1)
 	elements = []int{2, 4}
-	if list.Size != len(elements) {
-		t.Fatalf("list.Size error: want %d; got %d", len(elements), list.Size)
-	}
-
-	items = list.Items()
-	for i := 0; i < list.Size; i++ {
-		if items[i] != elements[i] {
-			t.Fatalf("item #%d: want %d; got %d", i, elements[i], items[i])
-		}
-	}
-
+	testFn(&list, elements)
 }
 
 func TestSLLRemove(t *testing.T) {
@@ -130,22 +124,20 @@ func TestSLLRemove(t *testing.T) {
 
 func TestSSLPrepend(t *testing.T) {
 	list := SinglyLinkedList{}
+
+	testFn := func(list *SinglyLinkedList, size, value int) {
+		if list.Size != size {
+			t.Errorf("list.Size error: want %d; got %d", 1, list.Size)
+		}
+
+		if list.Head.Value != value {
+			t.Errorf("want %d; got %d", 1, list.Head.Value)
+		}
+	}
+
 	list.Prepend(&Node{Value: 1})
-
-	if list.Size != 1 {
-		t.Errorf("list.Size error: want %d; got %d", 1, list.Size)
-	}
-
-	if list.Head.Value != 1 {
-		t.Errorf("want %d; got %d", 1, list.Head.Value)
-	}
+	testFn(&list, 1, 1)
 
 	list.Prepend(&Node{Value: 2})
-	if list.Size != 2 {
-		t.Errorf("list.Size error: want %d; got %d", 1, list.Size)
-	}
-
-	if list.Head.Value != 2 {
-		t.Errorf("want %d; got %d", 2, list.Head.Value)
-	}
+	testFn(&list, 2, 2)
 }
