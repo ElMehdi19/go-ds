@@ -5,12 +5,18 @@ import (
 	"testing"
 )
 
-func TestSLLAppend(t *testing.T) {
-	list := SinglyLinkedList{}
-	elements := []int{1, 9, 9, 8}
+type any interface{}
+
+func seedList(list *SinglyLinkedList, elements []any) {
 	for _, element := range elements {
 		list.Append(&Node{Value: element})
 	}
+}
+
+func TestSLLAppend(t *testing.T) {
+	list := SinglyLinkedList{}
+	elements := []any{1, 9, 9, 8}
+	seedList(&list, elements)
 
 	if list.Size != len(elements) {
 		t.Errorf("SinglyLinkedList.Size error: want %d; got %d", len(elements), list.Size)
@@ -55,16 +61,14 @@ func TestSLLAppendAsync(t *testing.T) {
 
 func TestSLLDelete(t *testing.T) {
 	list := SinglyLinkedList{}
-	elements := []int{1, 2, 3, 4}
-	for _, elem := range elements {
-		list.Append(&Node{Value: elem})
-	}
+	elements := []any{1, 2, 3, 4}
+	seedList(&list, elements)
 
 	if err := list.Delete(5); err == nil {
 		t.Error("want out of range error; got nil")
 	}
 
-	testFn := func(list *SinglyLinkedList, elements []int) {
+	testFn := func(list *SinglyLinkedList, elements []any) {
 		if list.Size != len(elements) {
 			t.Fatalf("list.Size error: want %d; got %d", len(elements), list.Size)
 		}
@@ -82,19 +86,17 @@ func TestSLLDelete(t *testing.T) {
 	testFn(&list, elements)
 
 	list.Delete(1)
-	elements = []int{2, 4}
+	elements = []any{2, 4}
 	testFn(&list, elements)
 }
 
 func TestSLLRemove(t *testing.T) {
 	list := SinglyLinkedList{}
-	elements := []int{1, 3, 3, 4}
-	for _, elem := range elements {
-		list.Append(&Node{Value: elem})
-	}
+	elements := []any{1, 3, 3, 4}
+	seedList(&list, elements)
 
 	list.Remove(3)
-	elements = []int{1, 4}
+	elements = []any{1, 4}
 	if list.Size != len(elements) {
 		t.Fatalf("list.Size error: want %d; got %d", len(elements), list.Size)
 	}
@@ -107,7 +109,7 @@ func TestSLLRemove(t *testing.T) {
 	}
 
 	list = SinglyLinkedList{}
-	elements = []int{3, 3, 3, 4}
+	elements = []any{3, 3, 3, 4}
 	for _, elem := range elements {
 		list.Append(&Node{Value: elem})
 	}
@@ -144,10 +146,8 @@ func TestSSLPrepend(t *testing.T) {
 
 func TestSSLReverse(t *testing.T) {
 	list := SinglyLinkedList{}
-	elements := []int{1, 2, 3, 4}
-	for _, element := range elements {
-		list.Append(&Node{Value: element})
-	}
+	elements := []any{1, 2, 3, 4}
+	seedList(&list, elements)
 
 	list.Reverse()
 	if list.Size != 4 {
@@ -155,7 +155,7 @@ func TestSSLReverse(t *testing.T) {
 	}
 
 	items := list.Items()
-	elements = []int{4, 3, 2, 1}
+	elements = []any{4, 3, 2, 1}
 	for i := 0; i < list.Size; i++ {
 		if items[i] != elements[i] {
 			t.Errorf("item #%d: want %d; got %d", i, elements[i], items[i])
@@ -165,9 +165,7 @@ func TestSSLReverse(t *testing.T) {
 
 func TestSSLClear(t *testing.T) {
 	list := SinglyLinkedList{}
-	for _, element := range []int{1, 2, 3, 4} {
-		list.Append(&Node{Value: element})
-	}
+	seedList(&list, []any{1, 2, 3, 4})
 	list.Clear()
 
 	if list.Size != 0 {
