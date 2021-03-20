@@ -127,3 +127,25 @@ func TestSLLRemove(t *testing.T) {
 		t.Errorf("want %d; got %d", 4, list.Head.Value)
 	}
 }
+
+func TestSSLPrepend(t *testing.T) {
+	list := SinglyLinkedList{}
+	list.Prepend(&Node{Value: 1})
+
+	if list.Size != 1 {
+		t.Errorf("list.Size error: want %d; got %d", 1, list.Size)
+	}
+
+	if list.Head.Value != 1 {
+		t.Errorf("want %d; got %d", 1, list.Head.Value)
+	}
+
+	list.Prepend(&Node{Value: 2})
+	if list.Size != 2 {
+		t.Errorf("list.Size error: want %d; got %d", 1, list.Size)
+	}
+
+	if list.Head.Value != 2 {
+		t.Errorf("want %d; got %d", 2, list.Head.Value)
+	}
+}

@@ -107,3 +107,14 @@ func (s *SinglyLinkedList) Remove(value interface{}) {
 		}
 	}
 }
+
+func (s *SinglyLinkedList) Prepend(n *Node) {
+	defer s.incrementSize()
+	if s.isEmpty() {
+		s.Head = n
+		return
+	}
+
+	n.Next = s.Head
+	s.Head = n
+}
