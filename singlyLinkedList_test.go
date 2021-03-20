@@ -91,3 +91,39 @@ func TestSLLDelete(t *testing.T) {
 	}
 
 }
+
+func TestSLLRemove(t *testing.T) {
+	list := SinglyLinkedList{}
+	elements := []int{1, 3, 3, 4}
+	for _, elem := range elements {
+		list.Append(&Node{Value: elem})
+	}
+
+	list.Remove(3)
+	elements = []int{1, 4}
+	if list.Size != len(elements) {
+		t.Fatalf("list.Size error: want %d; got %d", len(elements), list.Size)
+	}
+
+	items := list.Items()
+	for i := 0; i < list.Size; i++ {
+		if items[i] != elements[i] {
+			t.Errorf("item #%d: want %d; got %d", i, elements[i], items[i])
+		}
+	}
+
+	list = SinglyLinkedList{}
+	elements = []int{3, 3, 3, 4}
+	for _, elem := range elements {
+		list.Append(&Node{Value: elem})
+	}
+
+	list.Remove(3)
+	if list.Size != 1 {
+		t.Errorf("list.Size error: want %d; got %d", 1, list.Size)
+	}
+
+	if list.Head.Value != 4 {
+		t.Errorf("want %d; got %d", 4, list.Head.Value)
+	}
+}

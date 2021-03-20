@@ -77,3 +77,33 @@ func (s *SinglyLinkedList) Delete(index int) error {
 
 	return nil
 }
+
+func (s *SinglyLinkedList) Remove(value interface{}) {
+	if s.isEmpty() {
+		return
+	}
+
+	for {
+
+		if s.Head.Value == value {
+			s.Head = s.Head.Next
+			s.decrementSize()
+		} else {
+			break
+		}
+	}
+
+	var previousNode *Node
+	currentNode := s.Head
+
+	for currentNode != nil {
+		if currentNode.Value == value {
+			previousNode.Next = currentNode.Next
+			currentNode = currentNode.Next
+			s.decrementSize()
+		} else {
+			previousNode = currentNode
+			currentNode = currentNode.Next
+		}
+	}
+}
