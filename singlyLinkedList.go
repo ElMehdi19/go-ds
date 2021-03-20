@@ -136,3 +136,11 @@ func (s *SinglyLinkedList) Reverse() {
 	}
 	s.Head = previousNode
 }
+
+func (s *SinglyLinkedList) Clear() {
+	if s.isEmpty() {
+		return
+	}
+	s.Head = nil
+	s.Size = 0
+}

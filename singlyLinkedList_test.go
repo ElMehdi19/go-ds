@@ -162,3 +162,19 @@ func TestSSLReverse(t *testing.T) {
 		}
 	}
 }
+
+func TestSSLClear(t *testing.T) {
+	list := SinglyLinkedList{}
+	for _, element := range []int{1, 2, 3, 4} {
+		list.Append(&Node{Value: element})
+	}
+	list.Clear()
+
+	if list.Size != 0 {
+		t.Errorf("list.Size error: want %d; got %d", 0, list.Size)
+	}
+
+	if list.Head != nil {
+		t.Errorf("list.Head still points to a node")
+	}
+}
