@@ -144,3 +144,23 @@ func (s *SinglyLinkedList) Clear() {
 	s.Head = nil
 	s.Size = 0
 }
+
+func (s *SinglyLinkedList) Unique() {
+	if s.Size <= 1 {
+		return
+	}
+	visited := make(map[interface{}]bool)
+	currentNode := s.Head
+	var previousNode *Node
+
+	for currentNode != nil {
+		if _, ok := visited[currentNode.Value]; ok {
+			previousNode.Next = currentNode.Next
+			s.decrementSize()
+		} else {
+			visited[currentNode.Value] = true
+			previousNode = currentNode
+		}
+		currentNode = previousNode.Next
+	}
+}

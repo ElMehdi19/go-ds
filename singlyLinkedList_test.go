@@ -176,3 +176,22 @@ func TestSSLClear(t *testing.T) {
 		t.Errorf("list.Head still points to a node")
 	}
 }
+
+func TestSLLUnique(t *testing.T) {
+	list := SinglyLinkedList{}
+	elements := []any{3, 3, 1, 8, 0, 3, 8}
+	seedList(&list, elements)
+	list.Unique()
+
+	elements = []any{3, 1, 8, 0}
+	if list.Size != len(elements) {
+		t.Errorf("list.Size error: want %d; got %d", 3, list.Size)
+	}
+
+	items := list.Items()
+	for i := 0; i < list.Size; i++ {
+		if items[i] != elements[i] {
+			t.Errorf("item #%d: want %d; got %d", i, elements[i], items[i])
+		}
+	}
+}
