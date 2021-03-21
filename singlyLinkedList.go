@@ -164,3 +164,44 @@ func (s *SinglyLinkedList) Unique() {
 		currentNode = previousNode.Next
 	}
 }
+
+func (s *SinglyLinkedList) Swap(i, j int) {
+	if i >= s.Size || j >= s.Size {
+		return
+	}
+	if i == j || s.Size <= 1 {
+		return
+	}
+
+	currentNodeX := s.Head
+	var previousNodeX *Node
+	xIndex := 0
+
+	for currentNodeX != nil && xIndex != i {
+		previousNodeX = currentNodeX
+		currentNodeX = currentNodeX.Next
+		xIndex++
+	}
+
+	if currentNodeX == nil {
+		return
+	}
+
+	currentNodeY := s.Head
+	var previousNodeY *Node
+	yIndex := 0
+
+	for currentNodeY != nil && yIndex != j {
+		previousNodeY = currentNodeY
+		currentNodeY = currentNodeY.Next
+		yIndex++
+	}
+
+	if currentNodeY == nil {
+		return
+	}
+
+	currentNodeX.Next, currentNodeY.Next = currentNodeY.Next, currentNodeX.Next
+	previousNodeX.Next = currentNodeY
+	previousNodeY.Next = currentNodeX
+}

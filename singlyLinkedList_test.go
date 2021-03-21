@@ -185,10 +185,30 @@ func TestSLLUnique(t *testing.T) {
 
 	elements = []any{3, 1, 8, 0}
 	if list.Size != len(elements) {
-		t.Errorf("list.Size error: want %d; got %d", 3, list.Size)
+		t.Fatalf("list.Size error: want %d; got %d", 3, list.Size)
 	}
 
 	items := list.Items()
+	for i := 0; i < list.Size; i++ {
+		if items[i] != elements[i] {
+			t.Errorf("item #%d: want %d; got %d", i, elements[i], items[i])
+		}
+	}
+}
+
+func TestSLLSwap(t *testing.T) {
+	list := SinglyLinkedList{}
+	elements := []any{1, 2, 3, 4}
+	seedList(&list, elements)
+	list.Swap(1, 3)
+
+	if list.Size != 4 {
+		t.Fatalf("list.Size error: want %d; got %d", 4, list.Size)
+	}
+
+	items := list.Items()
+	elements = []any{1, 4, 3, 2}
+
 	for i := 0; i < list.Size; i++ {
 		if items[i] != elements[i] {
 			t.Errorf("item #%d: want %d; got %d", i, elements[i], items[i])
