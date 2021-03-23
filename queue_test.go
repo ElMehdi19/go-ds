@@ -69,3 +69,18 @@ func TestQPeek(t *testing.T) {
 		t.Errorf("want %d; got %d,", 4, q.Size)
 	}
 }
+
+func TestQInverse(t *testing.T) {
+	q := Queue{}
+	testStr := "racecar"
+	for _, c := range testStr {
+		q.Push(string(c))
+	}
+	testStr = ""
+	for q.Size != 0 {
+		testStr += fmt.Sprintf("%v", q.Pop())
+	}
+	if testStr != "racecar" {
+		t.Errorf("want %s; got %s", "racecar", testStr)
+	}
+}

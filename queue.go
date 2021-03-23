@@ -2,7 +2,8 @@ package ds
 
 import "sync"
 
-type item interface{}
+type item interface {
+}
 
 type Queue struct {
 	Items []item
