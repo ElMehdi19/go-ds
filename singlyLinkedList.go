@@ -38,6 +38,7 @@ func (s *SinglyLinkedList) Items() []interface{} {
 	return items
 }
 
+// Append takes a *Node and and adds it to the list
 func (s *SinglyLinkedList) Append(n *Node) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -55,6 +56,9 @@ func (s *SinglyLinkedList) Append(n *Node) {
 	currentNode.Next = n
 }
 
+// Delete takes a 0-based index and deletes
+// its correspendant node from the list
+// if it does exist otherwise returns a non-nil error
 func (s *SinglyLinkedList) Delete(index int) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -80,6 +84,8 @@ func (s *SinglyLinkedList) Delete(index int) error {
 	return nil
 }
 
+// Remove takes a value and deletes all the nodes
+// with the same value in the list
 func (s *SinglyLinkedList) Remove(value interface{}) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -111,6 +117,8 @@ func (s *SinglyLinkedList) Remove(value interface{}) {
 	}
 }
 
+// Prepend takes a *Node and inserts it
+// at the head of the list
 func (s *SinglyLinkedList) Prepend(n *Node) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -124,6 +132,7 @@ func (s *SinglyLinkedList) Prepend(n *Node) {
 	s.Head = n
 }
 
+// Reverse reverses the nodes order in the list
 func (s *SinglyLinkedList) Reverse() {
 	if s.Size <= 1 {
 		return
@@ -142,6 +151,7 @@ func (s *SinglyLinkedList) Reverse() {
 	s.Head = previousNode
 }
 
+// Clear removes all the list elements
 func (s *SinglyLinkedList) Clear() {
 	if s.isEmpty() {
 		return
@@ -150,6 +160,8 @@ func (s *SinglyLinkedList) Clear() {
 	s.Size = 0
 }
 
+// Unique removes all the duplicated nodes
+// based on their values
 func (s *SinglyLinkedList) Unique() {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -172,6 +184,8 @@ func (s *SinglyLinkedList) Unique() {
 	}
 }
 
+// Swap takes two int params and swap the position
+// of their correspending nodes in the list
 func (s *SinglyLinkedList) Swap(i, j int) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
