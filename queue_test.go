@@ -11,7 +11,7 @@ func TestQPush(t *testing.T) {
 		t.Errorf("queue should be empty at init time")
 	}
 
-	items := []int{2, 3, 1, 9}
+	items := []int{1, 9, 9, 8}
 	for i, item := range items {
 		q.Push(item)
 		t.Run(fmt.Sprintf("q.Push #%d", i), func(t *testing.T) {
@@ -25,12 +25,12 @@ func TestQPush(t *testing.T) {
 func TestQPop(t *testing.T) {
 	q := Queue{}
 
-	items := []int{2, 3, 1, 9}
+	items := []int{1, 9, 9, 8}
 	for _, item := range items {
 		q.Push(item)
 	}
 
-	items = []int{9, 1, 3, 2}
+	items = []int{8, 9, 9, 1}
 	for i, item := range items {
 		t.Run(fmt.Sprintf("q.Pop #%d", i), func(t *testing.T) {
 			top := q.Pop()
@@ -45,6 +45,27 @@ func TestQPop(t *testing.T) {
 	}
 
 	if q.Pop() != nil {
-		t.Errorf("q.Pop should return nil after removing all queue items")
+		t.Errorf("q head should be nil after removing all queue items")
+	}
+}
+
+func TestQPeek(t *testing.T) {
+	q := Queue{}
+	if q.Peek() != nil {
+		t.Errorf("q head should be nil at init time")
+	}
+
+	testFn := func(item int) {
+		q.Push(item)
+		if head := q.Peek(); head != item {
+			t.Errorf("q.Peek error: want %d; got %d", 1, head)
+		}
+	}
+	for _, item := range []int{1, 9, 9, 8} {
+		testFn(item)
+	}
+
+	if q.Size != 4 {
+		t.Errorf("want %d; got %d,", 4, q.Size)
 	}
 }

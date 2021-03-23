@@ -39,3 +39,10 @@ func (q *Queue) Pop() item {
 
 	return item
 }
+
+func (q *Queue) Peek() item {
+	if q.Size <= 0 {
+		return nil
+	}
+	return q.Items[q.Size-1]
+}
