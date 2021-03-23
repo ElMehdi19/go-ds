@@ -56,6 +56,8 @@ func (s *SinglyLinkedList) Append(n *Node) {
 }
 
 func (s *SinglyLinkedList) Delete(index int) error {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 	if index >= s.Size {
 		return errors.New("index out of range")
 	}
@@ -79,12 +81,13 @@ func (s *SinglyLinkedList) Delete(index int) error {
 }
 
 func (s *SinglyLinkedList) Remove(value interface{}) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 	if s.isEmpty() {
 		return
 	}
 
 	for {
-
 		if s.Head.Value == value {
 			s.Head = s.Head.Next
 			s.decrementSize()
@@ -109,6 +112,8 @@ func (s *SinglyLinkedList) Remove(value interface{}) {
 }
 
 func (s *SinglyLinkedList) Prepend(n *Node) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 	defer s.incrementSize()
 	if s.isEmpty() {
 		s.Head = n
@@ -146,6 +151,8 @@ func (s *SinglyLinkedList) Clear() {
 }
 
 func (s *SinglyLinkedList) Unique() {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 	if s.Size <= 1 {
 		return
 	}
@@ -166,6 +173,8 @@ func (s *SinglyLinkedList) Unique() {
 }
 
 func (s *SinglyLinkedList) Swap(i, j int) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
 	if i >= s.Size || j >= s.Size {
 		return
 	}
