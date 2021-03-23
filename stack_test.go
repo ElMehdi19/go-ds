@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func TestQPush(t *testing.T) {
-	q := Queue{}
+func TestStackPush(t *testing.T) {
+	q := Stack{}
 	if q.Size != 0 {
 		t.Errorf("queue should be empty at init time")
 	}
@@ -22,8 +22,8 @@ func TestQPush(t *testing.T) {
 	}
 }
 
-func TestQPop(t *testing.T) {
-	q := Queue{}
+func TestStackPop(t *testing.T) {
+	q := Stack{}
 
 	items := []int{1, 9, 9, 8}
 	for _, item := range items {
@@ -49,8 +49,8 @@ func TestQPop(t *testing.T) {
 	}
 }
 
-func TestQPeek(t *testing.T) {
-	q := Queue{}
+func TestStackPeek(t *testing.T) {
+	q := Stack{}
 	if q.Peek() != nil {
 		t.Errorf("q head should be nil at init time")
 	}
@@ -70,17 +70,13 @@ func TestQPeek(t *testing.T) {
 	}
 }
 
-func TestQInverse(t *testing.T) {
-	q := Queue{}
+func TestStackInverse(t *testing.T) {
+	q := Stack{}
 	testStr := "racecar"
 	for _, c := range testStr {
 		q.Push(string(c))
 	}
-	testStr = ""
-	for q.Size != 0 {
-		testStr += fmt.Sprintf("%v", q.Pop())
-	}
-	if testStr != "racecar" {
-		t.Errorf("want %s; got %s", "racecar", testStr)
+	if q.ToString() != testStr {
+		t.Errorf("want %s; got %s", testStr, q.ToString())
 	}
 }

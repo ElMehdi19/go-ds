@@ -1,32 +1,36 @@
 package ds
 
-import "sync"
+import (
+	"fmt"
+	"strings"
+	"sync"
+)
 
-type item interface {
+type stackItem interface {
 }
 
-type Queue struct {
-	Items []item
+type Stack struct {
+	Items []stackItem
 	Size  int
 	mutex sync.Mutex
 }
 
-func (q *Queue) incrementSize() {
+func (q *Stack) incrementSize() {
 	q.Size++
 }
 
-func (q *Queue) decrementSize() {
+func (q *Stack) decrementSize() {
 	q.Size--
 }
 
-func (q *Queue) Push(item item) {
+func (q *Stack) Push(item stackItem) {
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
 	defer q.incrementSize()
 	q.Items = append(q.Items, item)
 }
 
-func (q *Queue) Pop() item {
+func (q *Stack) Pop() stackItem {
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
 
@@ -35,15 +39,23 @@ func (q *Queue) Pop() item {
 	}
 
 	defer q.decrementSize()
-	var item item
+	var item stackItem
 	item, q.Items = q.Items[q.Size-1], q.Items[:q.Size-1]
 
 	return item
 }
 
-func (q *Queue) Peek() item {
+func (q *Stack) Peek() stackItem {
 	if q.Size <= 0 {
 		return nil
 	}
 	return q.Items[q.Size-1]
+}
+
+func (q *Stack) ToString() string {
+	var sb strings.Builder
+	for i := 0; i < q.Size; i++ {
+		sb.WriteString(fmt.Sprint(q.Items[i]))
+	}
+	return sb.String()
 }
