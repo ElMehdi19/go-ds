@@ -21,3 +21,30 @@ func TestQPush(t *testing.T) {
 		})
 	}
 }
+
+func TestQPop(t *testing.T) {
+	q := Queue{}
+
+	items := []int{2, 3, 1, 9}
+	for _, item := range items {
+		q.Push(item)
+	}
+
+	items = []int{9, 1, 3, 2}
+	for i, item := range items {
+		t.Run(fmt.Sprintf("q.Pop #%d", i), func(t *testing.T) {
+			top := q.Pop()
+			if item != top {
+				t.Errorf("want %d; got %d", item, top)
+			}
+		})
+	}
+
+	if q.Size != 0 {
+		t.Errorf("q.Size should be 0 after removing all queue items")
+	}
+
+	if q.Pop() != nil {
+		t.Errorf("q.Pop should return nil after removing all queue items")
+	}
+}
