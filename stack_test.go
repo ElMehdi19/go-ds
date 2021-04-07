@@ -10,7 +10,7 @@ import (
 func TestStackPush(t *testing.T) {
 	assert := assert.New(t)
 	q := Stack{}
-	assert.Equal(0, q.Size, "queue should be empty at init time")
+	assert.Equal(0, q.Size(), "queue should be empty at init time")
 
 	items := []int{1, 9, 9, 8}
 	for i, item := range items {
@@ -37,7 +37,7 @@ func TestStackPop(t *testing.T) {
 		})
 	}
 
-	assert.Equal(0, q.Size, "q.Size should be 0 after removing all queue items")
+	assert.Equal(0, q.Size(), "q.size should be 0 after removing all queue items")
 	assert.Nil(q.Pop(), "q head should be nil after removing all queue items")
 }
 
@@ -55,7 +55,7 @@ func TestStackPeek(t *testing.T) {
 		testFn(item)
 	}
 
-	assert.Equal(4, q.Size)
+	assert.Equal(4, q.Size())
 }
 
 func TestStackInverse(t *testing.T) {

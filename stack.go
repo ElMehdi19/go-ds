@@ -8,16 +8,16 @@ import (
 
 type Stack struct {
 	Top   *Node
-	Size  int
+	size  int
 	mutex sync.Mutex
 }
 
 func (q *Stack) incrementSize() {
-	q.Size++
+	q.size++
 }
 
 func (q *Stack) decrementSize() {
-	q.Size--
+	q.size--
 }
 
 // Push takes a stackItem parameter
@@ -37,7 +37,7 @@ func (q *Stack) Pop() Any {
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
 
-	if q.Size <= 0 {
+	if q.IsEmpty() {
 		return nil
 	}
 
@@ -51,7 +51,7 @@ func (q *Stack) Pop() Any {
 // Peek returns the stackItem at the top
 // of the stack without removing it
 func (q *Stack) Peek() Any {
-	if q.Size <= 0 {
+	if q.IsEmpty() {
 		return nil
 	}
 	return q.Top.Value
@@ -66,4 +66,12 @@ func (q *Stack) ToString() string {
 		sb.WriteString(fmt.Sprint(node.Value))
 	}
 	return sb.String()
+}
+
+func (q *Stack) IsEmpty() bool {
+	return q.size == 0
+}
+
+func (q *Stack) Size() int {
+	return q.size
 }
