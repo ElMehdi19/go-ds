@@ -7,28 +7,16 @@ import (
 )
 
 type Stack struct {
-	Top   *Node
-	size  int
+	top   *Node
 	mutex sync.Mutex
-}
-
-func (q *Stack) incrementSize() {
-	q.size++
-}
-
-func (q *Stack) decrementSize() {
-	q.size--
 }
 
 // Push takes a stackItem parameter
 // and inserts it at the top of the stack
 func (q *Stack) Push(item Any) {
 	q.mutex.Lock()
-	defer func() {
-		q.incrementSize()
-		q.mutex.Unlock()
-	}()
-	q.Top = &Node{Value: item, Next: q.Top}
+	defer q.mutex.Unlock()
+	q.top = &Node{Value: item, Next: q.top}
 }
 
 // Pop removes and returns the object
@@ -41,9 +29,8 @@ func (q *Stack) Pop() Any {
 		return nil
 	}
 
-	defer q.decrementSize()
 	var tmp *Node
-	tmp, q.Top = q.Top, q.Top.Next
+	tmp, q.top = q.top, q.top.Next
 
 	return tmp.Value
 }
@@ -54,7 +41,7 @@ func (q *Stack) Peek() Any {
 	if q.IsEmpty() {
 		return nil
 	}
-	return q.Top.Value
+	return q.top.Value
 }
 
 // ToString returns a string representation
@@ -62,16 +49,26 @@ func (q *Stack) Peek() Any {
 func (q *Stack) ToString() string {
 	var sb strings.Builder
 
-	for node := q.Top; node != nil; node = node.Next {
+	for node := q.top; node != nil; node = node.Next {
 		sb.WriteString(fmt.Sprint(node.Value))
 	}
 	return sb.String()
 }
 
 func (q *Stack) IsEmpty() bool {
-	return q.size == 0
+	return q.Size() == 0
 }
 
 func (q *Stack) Size() int {
-	return q.size
+	size := 0
+
+	if q.top == nil {
+		return size
+	}
+
+	for node := q.top; node != nil; node = node.Next {
+		size += 1
+	}
+
+	return size
 }
