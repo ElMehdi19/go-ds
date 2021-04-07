@@ -4,7 +4,6 @@ import "sync"
 
 type Queue struct {
 	Top   *Node
-	size  int
 	mutex sync.Mutex
 }
 
@@ -25,18 +24,7 @@ func (q *Queue) IsEmpty() bool {
 	return q.Size() == 0
 }
 
-func (q *Queue) incrementSize() {
-	q.size++
-}
-
-func (q *Queue) decrementSize() {
-	if q.size == 0 {
-		return
-	}
-	q.size--
-}
-
-func (q Queue) Peek() Any {
+func (q *Queue) Peek() Any {
 	if q.IsEmpty() {
 		return nil
 	}
@@ -48,10 +36,7 @@ func (q *Queue) Push(item Any) {
 		return
 	}
 	q.mutex.Lock()
-	defer func() {
-		q.incrementSize()
-		q.mutex.Unlock()
-	}()
+	defer q.mutex.Unlock()
 
 	if q.IsEmpty() {
 		q.Top = &Node{Value: item}
@@ -64,4 +49,17 @@ func (q *Queue) Push(item Any) {
 	}
 
 	node.Next = &Node{Value: item}
+}
+
+func (q *Queue) Pop() Any {
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	if q.IsEmpty() {
+		return nil
+	}
+
+	top := q.Top.Value
+	q.Top = q.Top.Next
+	return top
 }
