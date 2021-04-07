@@ -3,17 +3,17 @@ package ds
 import "sync"
 
 type Queue struct {
-	Top   *Node
+	top   *Node
 	mutex sync.Mutex
 }
 
 func (q *Queue) Size() int {
 	size := 0
-	if q.Top == nil {
+	if q.top == nil {
 		return size
 	}
 
-	for node := q.Top; node != nil; node = node.Next {
+	for node := q.top; node != nil; node = node.Next {
 		size += 1
 	}
 
@@ -28,7 +28,7 @@ func (q *Queue) Peek() Any {
 	if q.IsEmpty() {
 		return nil
 	}
-	return q.Top.Value
+	return q.top.Value
 }
 
 func (q *Queue) Push(item Any) {
@@ -39,11 +39,11 @@ func (q *Queue) Push(item Any) {
 	defer q.mutex.Unlock()
 
 	if q.IsEmpty() {
-		q.Top = &Node{Value: item}
+		q.top = &Node{Value: item}
 		return
 	}
 
-	node := q.Top
+	node := q.top
 	for node.Next != nil {
 		node = node.Next
 	}
@@ -59,8 +59,8 @@ func (q *Queue) Pop() Any {
 		return nil
 	}
 
-	top := q.Top.Value
-	q.Top = q.Top.Next
+	top := q.top.Value
+	q.top = q.top.Next
 	return top
 }
 
@@ -72,5 +72,5 @@ func (q *Queue) Clear() {
 		return
 	}
 
-	q.Top = nil
+	q.top = nil
 }

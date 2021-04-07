@@ -27,7 +27,7 @@ func TestQueuePush(t *testing.T) {
 	assert.Equal(2, queue.Size())
 
 	// Pushing to non empty queue
-	queue = Queue{Top: &Node{Value: 3}}
+	queue = Queue{top: &Node{Value: 3}}
 	assert.Equal(3, queue.Peek())
 	assert.Equal(1, queue.Size())
 }
@@ -61,5 +61,5 @@ func TestQueueClear(t *testing.T) {
 	// Clearing the queue
 	queue.Clear()
 	assert.Zero(queue.Size())
-	assert.Nil(queue.Top)
+	assert.Nil(queue.Peek())
 }
