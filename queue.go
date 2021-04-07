@@ -63,3 +63,14 @@ func (q *Queue) Pop() Any {
 	q.Top = q.Top.Next
 	return top
 }
+
+func (q *Queue) Clear() {
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+
+	if q.IsEmpty() {
+		return
+	}
+
+	q.Top = nil
+}

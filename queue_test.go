@@ -46,3 +46,20 @@ func TestQueuePop(t *testing.T) {
 	assert.Zero(queue.Size())
 	assert.Nil(queue.Pop())
 }
+
+func TestQueueClear(t *testing.T) {
+	assert := assert.New(t)
+
+	queue := Queue{}
+	elements := []Any{1, 2, 3}
+
+	seedQueue(&queue, elements...)
+
+	// make sure the queue is populated
+	assert.Equal(3, queue.Size())
+
+	// Clearing the queue
+	queue.Clear()
+	assert.Zero(queue.Size())
+	assert.Nil(queue.Top)
+}
