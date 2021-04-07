@@ -16,7 +16,7 @@ func TestStackPush(t *testing.T) {
 	for i, item := range items {
 		q.Push(item)
 		t.Run(fmt.Sprintf("q.Push #%d", i), func(t *testing.T) {
-			assert.Equal(item, q.Head.Value)
+			assert.Equal(item, q.Top.Value)
 		})
 	}
 }

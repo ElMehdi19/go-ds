@@ -7,7 +7,7 @@ import (
 )
 
 type Stack struct {
-	Head  *Node
+	Top   *Node
 	Size  int
 	mutex sync.Mutex
 }
@@ -28,7 +28,7 @@ func (q *Stack) Push(item Any) {
 		q.incrementSize()
 		q.mutex.Unlock()
 	}()
-	q.Head = &Node{Value: item, Next: q.Head}
+	q.Top = &Node{Value: item, Next: q.Top}
 }
 
 // Pop removes and returns the object
@@ -43,7 +43,7 @@ func (q *Stack) Pop() Any {
 
 	defer q.decrementSize()
 	var tmp *Node
-	tmp, q.Head = q.Head, q.Head.Next
+	tmp, q.Top = q.Top, q.Top.Next
 
 	return tmp.Value
 }
@@ -54,7 +54,7 @@ func (q *Stack) Peek() Any {
 	if q.Size <= 0 {
 		return nil
 	}
-	return q.Head.Value
+	return q.Top.Value
 }
 
 // ToString returns a string representation
@@ -62,7 +62,7 @@ func (q *Stack) Peek() Any {
 func (q *Stack) ToString() string {
 	var sb strings.Builder
 
-	for node := q.Head; node != nil; node = node.Next {
+	for node := q.Top; node != nil; node = node.Next {
 		sb.WriteString(fmt.Sprint(node.Value))
 	}
 	return sb.String()
