@@ -3,6 +3,8 @@ package ds
 import (
 	"sync"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type any interface{}
@@ -14,24 +16,23 @@ func seedList(list *SinglyLinkedList, elements []any) {
 }
 
 func TestSLLAppend(t *testing.T) {
+	assert := assert.New(t)
 	list := SinglyLinkedList{}
+
 	elements := []any{1, 9, 9, 8}
 	seedList(&list, elements)
 
-	if list.Size != len(elements) {
-		t.Errorf("SinglyLinkedList.Size error: want %d; got %d", len(elements), list.Size)
-	}
+	assert.Equal(len(elements), list.Size)
 
 	items := list.Items()
 
 	for i := 0; i < len(items); i++ {
-		if items[i] != elements[i] {
-			t.Errorf("node %d: want %d; got %d", i, elements[i], items[i])
-		}
+		assert.Equal(elements[i], items[i])
 	}
 }
 
 func TestSLLAppendAsync(t *testing.T) {
+	assert := assert.New(t)
 	list := SinglyLinkedList{}
 	elements := []int{1, 2, 3, 4}
 
@@ -47,37 +48,28 @@ func TestSLLAppendAsync(t *testing.T) {
 
 	wg.Wait()
 
-	if list.Size != len(elements) {
-		t.Errorf("SinglyLinkedList.Size error: want %d; got %d", len(elements), list.Size)
-	}
+	assert.Equal(len(elements), list.Size)
 
 	items := list.Items()
 	for i := 0; i < len(items); i++ {
-		if items[i] != elements[i] {
-			t.Errorf("node %d: want %d; got %d", i, elements[i], items[i])
-		}
+		assert.Equal(len(elements), list.Size)
 	}
 }
 
 func TestSLLDelete(t *testing.T) {
+	assert := assert.New(t)
 	list := SinglyLinkedList{}
 	elements := []any{1, 2, 3, 4}
-	seedList(&list, elements)
 
-	if err := list.Delete(5); err == nil {
-		t.Error("want out of range error; got nil")
-	}
+	seedList(&list, elements)
+	assert.NotNil(list.Delete(5), "want out of range error; got nil")
 
 	testFn := func(list *SinglyLinkedList, elements []any) {
-		if list.Size != len(elements) {
-			t.Fatalf("list.Size error: want %d; got %d", len(elements), list.Size)
-		}
+		assert.Equal(len(elements), list.Size)
 
 		items := list.Items()
 		for i := 0; i < list.Size; i++ {
-			if items[i] != elements[i] {
-				t.Fatalf("item #%d: want %d; got %d", i, elements[i], items[i])
-			}
+			assert.Equal(elements[i], items[i])
 		}
 	}
 
@@ -91,21 +83,18 @@ func TestSLLDelete(t *testing.T) {
 }
 
 func TestSLLRemove(t *testing.T) {
+	assert := assert.New(t)
 	list := SinglyLinkedList{}
 	elements := []any{1, 3, 3, 4}
 	seedList(&list, elements)
 
 	list.Remove(3)
 	elements = []any{1, 4}
-	if list.Size != len(elements) {
-		t.Fatalf("list.Size error: want %d; got %d", len(elements), list.Size)
-	}
+	assert.Equal(len(elements), list.Size)
 
 	items := list.Items()
 	for i := 0; i < list.Size; i++ {
-		if items[i] != elements[i] {
-			t.Errorf("item #%d: want %d; got %d", i, elements[i], items[i])
-		}
+		assert.Equal(elements[i], items[i])
 	}
 
 	list = SinglyLinkedList{}
@@ -115,26 +104,18 @@ func TestSLLRemove(t *testing.T) {
 	}
 
 	list.Remove(3)
-	if list.Size != 1 {
-		t.Errorf("list.Size error: want %d; got %d", 1, list.Size)
-	}
-
-	if list.Head.Value != 4 {
-		t.Errorf("want %d; got %d", 4, list.Head.Value)
-	}
+	assert.Equal(1, list.Size)
+	assert.Equal(4, list.Head.Value)
 }
 
 func TestSSLPrepend(t *testing.T) {
+	assert := assert.New(t)
 	list := SinglyLinkedList{}
 
 	testFn := func(list *SinglyLinkedList, size, value int) {
-		if list.Size != size {
-			t.Errorf("list.Size error: want %d; got %d", 1, list.Size)
-		}
+		assert.Equal(size, list.Size)
 
-		if list.Head.Value != value {
-			t.Errorf("want %d; got %d", 1, list.Head.Value)
-		}
+		assert.Equal(value, list.Head.Value)
 	}
 
 	list.Prepend(&Node{Value: 1})
@@ -145,73 +126,60 @@ func TestSSLPrepend(t *testing.T) {
 }
 
 func TestSSLReverse(t *testing.T) {
+	assert := assert.New(t)
 	list := SinglyLinkedList{}
 	elements := []any{1, 2, 3, 4}
 	seedList(&list, elements)
 
 	list.Reverse()
-	if list.Size != 4 {
-		t.Fatalf("list.Size error: want %d; got %d", 4, list.Size)
-	}
+	assert.Equal(4, list.Size)
 
 	items := list.Items()
 	elements = []any{4, 3, 2, 1}
 	for i := 0; i < list.Size; i++ {
-		if items[i] != elements[i] {
-			t.Errorf("item #%d: want %d; got %d", i, elements[i], items[i])
-		}
+		assert.Equal(elements[i], items[i])
 	}
 }
 
 func TestSSLClear(t *testing.T) {
+	assert := assert.New(t)
 	list := SinglyLinkedList{}
 	seedList(&list, []any{1, 2, 3, 4})
 	list.Clear()
 
-	if list.Size != 0 {
-		t.Errorf("list.Size error: want %d; got %d", 0, list.Size)
-	}
-
-	if list.Head != nil {
-		t.Errorf("list.Head still points to a node")
-	}
+	assert.Equal(0, list.Size)
+	assert.Nil(list.Head, "list.Head still points to a node")
 }
 
 func TestSLLUnique(t *testing.T) {
+	assert := assert.New(t)
 	list := SinglyLinkedList{}
 	elements := []any{3, 3, 1, 8, 0, 3, 8}
 	seedList(&list, elements)
 	list.Unique()
 
 	elements = []any{3, 1, 8, 0}
-	if list.Size != len(elements) {
-		t.Fatalf("list.Size error: want %d; got %d", 3, list.Size)
-	}
+	assert.Equal(len(elements), list.Size)
 
 	items := list.Items()
 	for i := 0; i < list.Size; i++ {
-		if items[i] != elements[i] {
-			t.Errorf("item #%d: want %d; got %d", i, elements[i], items[i])
-		}
+		assert.Equal(elements[i], items[i])
 	}
 }
 
 func TestSLLSwap(t *testing.T) {
+	assert := assert.New(t)
 	list := SinglyLinkedList{}
 	elements := []any{1, 2, 3, 4}
 	seedList(&list, elements)
 	list.Swap(1, 3)
 
-	if list.Size != 4 {
-		t.Fatalf("list.Size error: want %d; got %d", 4, list.Size)
-	}
+	assert.Equal(4, list.Size)
 
 	items := list.Items()
 	elements = []any{1, 4, 3, 2}
 
 	for i := 0; i < list.Size; i++ {
-		if items[i] != elements[i] {
-			t.Errorf("item #%d: want %d; got %d", i, elements[i], items[i])
-		}
+		assert.Equal(elements[i], items[i])
 	}
 }

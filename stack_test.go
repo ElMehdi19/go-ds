@@ -33,7 +33,7 @@ func TestStackPop(t *testing.T) {
 	items = []int{8, 9, 9, 1}
 	for i, item := range items {
 		t.Run(fmt.Sprintf("q.Pop #%d", i), func(t *testing.T) {
-			assert.Equal(item, q.Pop(), "want %d; got %d")
+			assert.Equal(item, q.Pop())
 		})
 	}
 
@@ -49,13 +49,13 @@ func TestStackPeek(t *testing.T) {
 
 	testFn := func(item int) {
 		q.Push(item)
-		assert.Equal(item, q.Peek(), "q.Peek error: want %d; got %d", 1, q.Peek())
+		assert.Equal(item, q.Peek())
 	}
 	for _, item := range []int{1, 9, 9, 8} {
 		testFn(item)
 	}
 
-	assert.Equal(4, q.Size, "want %d; got %d,", 4, q.Size)
+	assert.Equal(4, q.Size)
 }
 
 func TestStackInverse(t *testing.T) {
@@ -66,5 +66,5 @@ func TestStackInverse(t *testing.T) {
 	for _, c := range testStr {
 		q.Push(string(c))
 	}
-	assert.Equal(testStr, q.ToString(), "want %s; got %s", testStr, q.ToString())
+	assert.Equal(testStr, q.ToString())
 }
