@@ -5,11 +5,6 @@ import (
 	"sync"
 )
 
-type Node struct {
-	Value interface{}
-	Next  *Node
-}
-
 type SinglyLinkedList struct {
 	Head  *Node
 	Size  int

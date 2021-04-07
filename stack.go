@@ -6,11 +6,8 @@ import (
 	"sync"
 )
 
-type stackItem interface {
-}
-
 type Stack struct {
-	Items []stackItem
+	Head  *Node
 	Size  int
 	mutex sync.Mutex
 }
@@ -25,16 +22,18 @@ func (q *Stack) decrementSize() {
 
 // Push takes a stackItem parameter
 // and inserts it at the top of the stack
-func (q *Stack) Push(item stackItem) {
+func (q *Stack) Push(item Any) {
 	q.mutex.Lock()
-	defer q.mutex.Unlock()
-	defer q.incrementSize()
-	q.Items = append(q.Items, item)
+	defer func() {
+		q.incrementSize()
+		q.mutex.Unlock()
+	}()
+	q.Head = &Node{Value: item, Next: q.Head}
 }
 
 // Pop removes and returns the object
 // at the top of the stack
-func (q *Stack) Pop() stackItem {
+func (q *Stack) Pop() Any {
 	q.mutex.Lock()
 	defer q.mutex.Unlock()
 
@@ -43,27 +42,28 @@ func (q *Stack) Pop() stackItem {
 	}
 
 	defer q.decrementSize()
-	var item stackItem
-	item, q.Items = q.Items[q.Size-1], q.Items[:q.Size-1]
+	var tmp *Node
+	tmp, q.Head = q.Head, q.Head.Next
 
-	return item
+	return tmp.Value
 }
 
 // Peek returns the stackItem at the top
 // of the stack without removing it
-func (q *Stack) Peek() stackItem {
+func (q *Stack) Peek() Any {
 	if q.Size <= 0 {
 		return nil
 	}
-	return q.Items[q.Size-1]
+	return q.Head.Value
 }
 
 // ToString returns a string representation
 // of the stack
 func (q *Stack) ToString() string {
 	var sb strings.Builder
-	for i := 0; i < q.Size; i++ {
-		sb.WriteString(fmt.Sprint(q.Items[i]))
+
+	for node := q.Head; node != nil; node = node.Next {
+		sb.WriteString(fmt.Sprint(node.Value))
 	}
 	return sb.String()
 }

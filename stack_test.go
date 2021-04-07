@@ -3,6 +3,7 @@ package ds
 import (
 	"fmt"
 	"testing"
+	// "github.com/stretchr/testify/assert"
 )
 
 func TestStackPush(t *testing.T) {
@@ -15,8 +16,8 @@ func TestStackPush(t *testing.T) {
 	for i, item := range items {
 		q.Push(item)
 		t.Run(fmt.Sprintf("q.Push #%d", i), func(t *testing.T) {
-			if item != q.Items[q.Size-1] {
-				t.Errorf("want %d; got %d", item, q.Items[q.Size-1])
+			if item != q.Head.Value {
+				t.Errorf("want %d; got %d", item, q.Head.Value)
 			}
 		})
 	}
