@@ -63,3 +63,27 @@ func TestQueueClear(t *testing.T) {
 	assert.Zero(queue.Size())
 	assert.Nil(queue.Peek())
 }
+
+func TestQueueNoNilItem(t *testing.T) {
+	assert := assert.New(t)
+
+	queue := Queue{}
+	elements := []Any{1, 2, nil, 3}
+
+	seedQueue(&queue, elements...)
+	for !queue.IsEmpty() {
+		assert.NotNil(queue.Pop())
+	}
+}
+
+func TestQueueString(t *testing.T) {
+	assert := assert.New(t)
+
+	queue := Queue{}
+	elements := []Any{1, 2, nil, 3}
+
+	seedQueue(&queue, elements...)
+
+	assert.Equal("123", queue.ToString())
+
+}

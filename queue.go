@@ -1,8 +1,14 @@
 package ds
 
-import "sync"
+import (
+	"fmt"
+	"strings"
+	"sync"
+)
 
 type Queue struct {
+	// fields are only accessible by
+	// readers: Peek, Pop
 	top   *Node
 	mutex sync.Mutex
 }
@@ -73,4 +79,16 @@ func (q *Queue) Clear() {
 	}
 
 	q.top = nil
+}
+
+func (q *Queue) ToString() string {
+	if q.IsEmpty() {
+		return ""
+	}
+
+	var sb strings.Builder
+	for node := q.top; node != nil; node = node.Next {
+		sb.WriteString(fmt.Sprint(node.Value))
+	}
+	return sb.String()
 }
