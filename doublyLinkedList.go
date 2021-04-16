@@ -1,6 +1,9 @@
 package ds
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 type DoublyLinkedList struct {
 	Head  *Node
@@ -44,4 +47,18 @@ func (d *DoublyLinkedList) Append(n *Node) {
 
 	n.Previous = currentNode
 	currentNode.Next = n
+}
+
+func (d *DoublyLinkedList) Get(id int) (Any, error) {
+	if d.size == 0 || id >= d.size {
+		return nil, fmt.Errorf("index out of range")
+	}
+
+	currentNode := d.Head
+
+	for i := 0; i < id; i++ {
+		currentNode = currentNode.Next
+	}
+
+	return currentNode.Value, nil
 }
