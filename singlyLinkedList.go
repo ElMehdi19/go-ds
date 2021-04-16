@@ -2,6 +2,7 @@ package ds
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 )
 
@@ -222,4 +223,18 @@ func (s *SinglyLinkedList) Swap(i, j int) {
 	currentNodeX.Next, currentNodeY.Next = currentNodeY.Next, currentNodeX.Next
 	previousNodeX.Next = currentNodeY
 	previousNodeY.Next = currentNodeX
+}
+
+func (s *SinglyLinkedList) Get(id int) (Any, error) {
+	if s.Size == 0 || id >= s.Size {
+		return nil, fmt.Errorf("index out of range")
+	}
+
+	currentNode := s.Head
+
+	for i := 0; i < id; i++ {
+		currentNode = currentNode.Next
+	}
+
+	return currentNode.Value, nil
 }

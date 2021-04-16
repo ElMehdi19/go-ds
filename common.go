@@ -9,7 +9,8 @@ type Node struct {
 type Any interface{}
 
 type List interface {
-	Append(n *Node)
+	Append(*Node)
+	Get(int) (Any, error)
 }
 
 func seedList(list List, elements []Any) {

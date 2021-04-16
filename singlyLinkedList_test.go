@@ -175,3 +175,25 @@ func TestSLLSwap(t *testing.T) {
 		assert.Equal(elements[i], items[i])
 	}
 }
+
+func TestSLLGet(t *testing.T) {
+	assert := assert.New(t)
+	var list SinglyLinkedList
+
+	item, err := list.Get(0)
+	assert.Nil(item)
+	assert.Error(err)
+
+	elements := []Any{1, 9, 9, 8}
+	seedList(&list, elements)
+
+	for i := 0; i < len(elements); i++ {
+		item, err = list.Get(i)
+		assert.Nil(err)
+		assert.Equal(elements[i], item)
+	}
+
+	item, err = list.Get(len(elements))
+	assert.Nil(item)
+	assert.Error(err)
+}
