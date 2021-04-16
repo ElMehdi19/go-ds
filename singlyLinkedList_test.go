@@ -7,19 +7,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type any interface{}
-
-func seedList(list *SinglyLinkedList, elements []any) {
-	for _, element := range elements {
-		list.Append(&Node{Value: element})
-	}
-}
-
 func TestSLLAppend(t *testing.T) {
 	assert := assert.New(t)
 	list := SinglyLinkedList{}
 
-	elements := []any{1, 9, 9, 8}
+	elements := []Any{1, 9, 9, 8}
 	seedList(&list, elements)
 
 	assert.Equal(len(elements), list.Size)
@@ -59,12 +51,12 @@ func TestSLLAppendAsync(t *testing.T) {
 func TestSLLDelete(t *testing.T) {
 	assert := assert.New(t)
 	list := SinglyLinkedList{}
-	elements := []any{1, 2, 3, 4}
+	elements := []Any{1, 2, 3, 4}
 
 	seedList(&list, elements)
 	assert.NotNil(list.Delete(5), "want out of range error; got nil")
 
-	testFn := func(list *SinglyLinkedList, elements []any) {
+	testFn := func(list *SinglyLinkedList, elements []Any) {
 		assert.Equal(len(elements), list.Size)
 
 		items := list.Items()
@@ -78,18 +70,18 @@ func TestSLLDelete(t *testing.T) {
 	testFn(&list, elements)
 
 	list.Delete(1)
-	elements = []any{2, 4}
+	elements = []Any{2, 4}
 	testFn(&list, elements)
 }
 
 func TestSLLRemove(t *testing.T) {
 	assert := assert.New(t)
 	list := SinglyLinkedList{}
-	elements := []any{1, 3, 3, 4}
+	elements := []Any{1, 3, 3, 4}
 	seedList(&list, elements)
 
 	list.Remove(3)
-	elements = []any{1, 4}
+	elements = []Any{1, 4}
 	assert.Equal(len(elements), list.Size)
 
 	items := list.Items()
@@ -98,7 +90,7 @@ func TestSLLRemove(t *testing.T) {
 	}
 
 	list = SinglyLinkedList{}
-	elements = []any{3, 3, 3, 4}
+	elements = []Any{3, 3, 3, 4}
 	for _, elem := range elements {
 		list.Append(&Node{Value: elem})
 	}
@@ -128,14 +120,14 @@ func TestSSLPrepend(t *testing.T) {
 func TestSSLReverse(t *testing.T) {
 	assert := assert.New(t)
 	list := SinglyLinkedList{}
-	elements := []any{1, 2, 3, 4}
+	elements := []Any{1, 2, 3, 4}
 	seedList(&list, elements)
 
 	list.Reverse()
 	assert.Equal(4, list.Size)
 
 	items := list.Items()
-	elements = []any{4, 3, 2, 1}
+	elements = []Any{4, 3, 2, 1}
 	for i := 0; i < list.Size; i++ {
 		assert.Equal(elements[i], items[i])
 	}
@@ -144,7 +136,7 @@ func TestSSLReverse(t *testing.T) {
 func TestSSLClear(t *testing.T) {
 	assert := assert.New(t)
 	list := SinglyLinkedList{}
-	seedList(&list, []any{1, 2, 3, 4})
+	seedList(&list, []Any{1, 2, 3, 4})
 	list.Clear()
 
 	assert.Equal(0, list.Size)
@@ -154,11 +146,11 @@ func TestSSLClear(t *testing.T) {
 func TestSLLUnique(t *testing.T) {
 	assert := assert.New(t)
 	list := SinglyLinkedList{}
-	elements := []any{3, 3, 1, 8, 0, 3, 8}
+	elements := []Any{3, 3, 1, 8, 0, 3, 8}
 	seedList(&list, elements)
 	list.Unique()
 
-	elements = []any{3, 1, 8, 0}
+	elements = []Any{3, 1, 8, 0}
 	assert.Equal(len(elements), list.Size)
 
 	items := list.Items()
@@ -170,14 +162,14 @@ func TestSLLUnique(t *testing.T) {
 func TestSLLSwap(t *testing.T) {
 	assert := assert.New(t)
 	list := SinglyLinkedList{}
-	elements := []any{1, 2, 3, 4}
+	elements := []Any{1, 2, 3, 4}
 	seedList(&list, elements)
 	list.Swap(1, 3)
 
 	assert.Equal(4, list.Size)
 
 	items := list.Items()
-	elements = []any{1, 4, 3, 2}
+	elements = []Any{1, 4, 3, 2}
 
 	for i := 0; i < list.Size; i++ {
 		assert.Equal(elements[i], items[i])
