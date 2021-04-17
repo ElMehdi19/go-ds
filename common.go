@@ -12,6 +12,8 @@ type List interface {
 	Append(*Node)
 	Get(int) (Any, error)
 	Prepend(*Node)
+	Delete(int) error
+	Remove(Any)
 }
 
 func seedList(list List, elements []Any) {

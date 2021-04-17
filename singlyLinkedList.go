@@ -82,7 +82,7 @@ func (s *SinglyLinkedList) Delete(index int) error {
 
 // Remove takes a value and deletes all the nodes
 // with the same value in the list
-func (s *SinglyLinkedList) Remove(value interface{}) {
+func (s *SinglyLinkedList) Remove(value Any) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	if s.isEmpty() {

@@ -16,6 +16,9 @@ func (d *DoublyLinkedList) incrementSize() {
 }
 
 func (d *DoublyLinkedList) decrementSize() {
+	if d.size == 0 {
+		return
+	}
 	d.size -= 1
 }
 
@@ -108,4 +111,41 @@ func (d *DoublyLinkedList) Delete(id int) error {
 	currentNode.Previous = previousNode
 
 	return nil
+}
+
+func (d *DoublyLinkedList) Remove(value Any) {
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
+	if d.size == 0 {
+		return
+	}
+
+	for {
+		if d.Head == nil {
+			return
+		}
+
+		if d.Head.Value == value {
+			d.Head = d.Head.Next
+			d.decrementSize()
+		} else {
+			break
+		}
+	}
+
+	currentNode := d.Head
+	var previousNode *Node
+
+	for currentNode != nil {
+		if currentNode.Value == value {
+			previousNode.Next = currentNode.Next
+			d.decrementSize()
+			if currentNode.Next != nil {
+				currentNode.Next.Previous = previousNode
+			}
+		} else {
+			previousNode = currentNode
+		}
+		currentNode = currentNode.Next
+	}
 }

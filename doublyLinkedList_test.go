@@ -87,3 +87,29 @@ func TestDLLDelete(t *testing.T) {
 		assert.Equal(elements[i], item)
 	}
 }
+
+func TestDLLRemove(t *testing.T) {
+	assert := assert.New(t)
+	var list DoublyLinkedList
+
+	elements := []Any{1, 9, 9, 8}
+	seedList(&list, elements)
+	assert.Equal(4, list.Size())
+
+	list.Remove(9)
+	assert.Equal(2, list.Size())
+
+	item, _ := list.Get(0)
+	assert.Equal(1, item)
+
+	item, _ = list.Get(1)
+	assert.Equal(8, item)
+
+	list.Remove(1)
+	assert.Equal(1, list.Size())
+	item, _ = list.Get(0)
+	assert.Equal(8, item)
+
+	list.Remove(8)
+	assert.Equal(0, list.Size())
+}
