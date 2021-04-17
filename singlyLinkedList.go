@@ -182,47 +182,77 @@ func (s *SinglyLinkedList) Unique() {
 
 // Swap takes two int params and swap the position
 // of their correspending nodes in the list
-func (s *SinglyLinkedList) Swap(i, j int) {
+func (s *SinglyLinkedList) Swap(i, j int) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	if i >= s.Size || j >= s.Size {
-		return
+		return fmt.Errorf("index out of range")
 	}
 	if i == j || s.Size <= 1 {
-		return
+		return nil
+	}
+
+	if i > j {
+		i, j = j, i
 	}
 
 	currentNodeX := s.Head
 	var previousNodeX *Node
-	xIndex := 0
 
-	for currentNodeX != nil && xIndex != i {
+	for x := 0; x < i; x++ {
 		previousNodeX = currentNodeX
 		currentNodeX = currentNodeX.Next
-		xIndex++
-	}
-
-	if currentNodeX == nil {
-		return
 	}
 
 	currentNodeY := s.Head
 	var previousNodeY *Node
-	yIndex := 0
 
-	for currentNodeY != nil && yIndex != j {
+	for x := 0; x < j; x++ {
 		previousNodeY = currentNodeY
 		currentNodeY = currentNodeY.Next
-		yIndex++
 	}
 
-	if currentNodeY == nil {
-		return
+	if previousNodeX != nil {
+		previousNodeX.Next = currentNodeY
+	} else {
+		s.Head = currentNodeY
+	}
+
+	if previousNodeY != nil {
+		previousNodeY.Next = currentNodeX
 	}
 
 	currentNodeX.Next, currentNodeY.Next = currentNodeY.Next, currentNodeX.Next
-	previousNodeX.Next = currentNodeY
-	previousNodeY.Next = currentNodeX
+
+	return nil
+
+	// for currentNodeX != nil && xIndex != i {
+	// 	previousNodeX = currentNodeX
+	// 	currentNodeX = currentNodeX.Next
+	// 	xIndex++
+	// }
+
+	// if currentNodeX == nil {
+	// 	return
+	// }
+
+	// currentNodeY := s.Head
+	// var previousNodeY *Node
+	// yIndex := 0
+
+	// for currentNodeY != nil && yIndex != j {
+	// 	previousNodeY = currentNodeY
+	// 	currentNodeY = currentNodeY.Next
+	// 	yIndex++
+	// }
+
+	// if currentNodeY == nil {
+	// 	return
+	// }
+
+	// currentNodeX.Next, currentNodeY.Next = currentNodeY.Next, currentNodeX.Next
+	// previousNodeX.Next = currentNodeY
+	// previousNodeY.Next = currentNodeX
 }
 
 func (s *SinglyLinkedList) Get(id int) (Any, error) {

@@ -164,12 +164,37 @@ func TestSLLSwap(t *testing.T) {
 	list := SinglyLinkedList{}
 	elements := []Any{1, 2, 3, 4}
 	seedList(&list, elements)
-	list.Swap(1, 3)
 
-	assert.Equal(4, list.Size)
+	// test valid swap
+	list.Swap(1, 3)
+	assert.Equal(len(elements), list.Size)
 
 	items := list.Items()
 	elements = []Any{1, 4, 3, 2}
+
+	for i := 0; i < list.Size; i++ {
+		assert.Equal(elements[i], items[i])
+	}
+
+	// test swap head with tail
+	list.Swap(0, 3)
+	elements = []Any{2, 4, 3, 1}
+	assert.Equal(len(elements), list.Size)
+
+	items = list.Items()
+	for i := 0; i < list.Size; i++ {
+		assert.Equal(elements[i], items[i])
+	}
+
+	// test out of range indices
+	assert.Error(list.Swap(10, 20))
+
+	// test swap where 1st index > 2nd index
+	list.Swap(3, 1)
+	assert.Equal(len(elements), list.Size)
+
+	items = list.Items()
+	elements = []Any{2, 1, 3, 4}
 
 	for i := 0; i < list.Size; i++ {
 		assert.Equal(elements[i], items[i])
