@@ -14,6 +14,7 @@ type List interface {
 	Prepend(*Node)
 	Delete(int) error
 	Remove(Any)
+	Swap(i, j int) error
 }
 
 func seedList(list List, elements []Any) {

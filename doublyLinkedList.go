@@ -163,9 +163,6 @@ func (d *DoublyLinkedList) Swap(i, j int) error {
 		i, j = j, i
 	}
 
-	// 1 <-> 2 <-> 3 <-> 4 -> nil
-	// 1 <-> 3 <-> 2 <-> 4 -> nil
-
 	currentNodeX := d.Head
 	var previousNodeX *Node
 
