@@ -113,3 +113,36 @@ func TestDLLRemove(t *testing.T) {
 	list.Remove(8)
 	assert.Equal(0, list.Size())
 }
+
+func TestDLLSwap(t *testing.T) {
+	assert := assert.New(t)
+	var list DoublyLinkedList
+	assert.Error(list.Swap(1, 2))
+
+	elements := []Any{1, 2, 3, 4}
+	seedList(&list, elements)
+
+	items := list.Items()
+	assert.Equal(len(elements), len(items))
+
+	for i := 0; i < len(elements); i++ {
+		assert.Equal(elements[i], items[i])
+	}
+
+	list.Swap(1, 2)
+	elements = []Any{1, 3, 2, 4}
+	items = list.Items()
+
+	for i := 0; i < len(elements); i++ {
+		assert.Equal(elements[i], items[i])
+	}
+
+	list.Swap(0, 3)
+	elements = []Any{4, 3, 2, 1}
+	items = list.Items()
+	assert.Equal(len(elements), len(items))
+
+	for i := 0; i < len(elements); i++ {
+		assert.Equal(elements[i], items[i])
+	}
+}

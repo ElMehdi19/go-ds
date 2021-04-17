@@ -149,3 +149,51 @@ func (d *DoublyLinkedList) Remove(value Any) {
 		currentNode = currentNode.Next
 	}
 }
+
+func (d *DoublyLinkedList) Swap(i, j int) error {
+	if i == j {
+		return nil
+	}
+
+	if d.size == 0 || d.size <= i || d.size <= j {
+		return fmt.Errorf("index out of range")
+	}
+
+	if i > j {
+		i, j = j, i
+	}
+
+	// 1 <-> 2 <-> 3 <-> 4 -> nil
+	// 1 <-> 3 <-> 2 <-> 4 -> nil
+
+	currentNodeX := d.Head
+	var previousNodeX *Node
+
+	for x := 0; x < i; x++ {
+		previousNodeX = currentNodeX
+		currentNodeX = currentNodeX.Next
+	}
+
+	currentNodeY := d.Head
+	var previousNodeY *Node
+
+	for x := 0; x < j; x++ {
+		previousNodeY = currentNodeY
+		currentNodeY = currentNodeY.Next
+	}
+
+	if previousNodeX != nil {
+		previousNodeX.Next = currentNodeY
+	} else {
+		d.Head = currentNodeY
+	}
+
+	if previousNodeY != nil {
+		previousNodeY.Next = currentNodeX
+	}
+
+	currentNodeX.Next, currentNodeY.Next = currentNodeY.Next, currentNodeX.Next
+	currentNodeX.Previous, currentNodeY.Previous = currentNodeY.Previous, currentNodeX.Previous
+
+	return nil
+}
