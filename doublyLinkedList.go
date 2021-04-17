@@ -15,6 +15,10 @@ func (d *DoublyLinkedList) incrementSize() {
 	d.size += 1
 }
 
+func (d *DoublyLinkedList) decrementSize() {
+	d.size -= 1
+}
+
 func (d *DoublyLinkedList) Size() int {
 	return d.size
 }
@@ -76,4 +80,32 @@ func (d *DoublyLinkedList) Prepend(n *Node) {
 	n.Next = d.Head
 	d.Head.Previous = n
 	d.Head = n
+}
+
+func (d *DoublyLinkedList) Delete(id int) error {
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
+	if d.size == 0 || d.size <= id {
+		return fmt.Errorf("index out of range")
+	}
+
+	defer d.decrementSize()
+	if id == 0 {
+		d.Head = d.Head.Next
+		return nil
+	}
+
+	currentNode := d.Head
+	var previousNode *Node
+
+	for i := 0; i < id; i++ {
+		previousNode = currentNode
+		currentNode = currentNode.Next
+	}
+
+	// i == id
+	previousNode.Next = currentNode.Next
+	currentNode.Previous = previousNode
+
+	return nil
 }

@@ -60,3 +60,30 @@ func TestDLLPrepend(t *testing.T) {
 	item, _ = list.Get(1)
 	assert.Equal(1, item)
 }
+
+func TestDLLDelete(t *testing.T) {
+	assert := assert.New(t)
+	var list DoublyLinkedList
+
+	assert.Error(list.Delete(0))
+
+	list.Append(&Node{Value: 1})
+	assert.Equal(1, list.Size())
+	assert.Error(list.Delete(1))
+	assert.Nil(list.Delete(0))
+	assert.Equal(0, list.Size())
+
+	elements := []Any{1, 9, 9, 8}
+	seedList(&list, elements)
+
+	assert.Nil(list.Delete(1))
+	assert.Nil(list.Delete(2))
+	assert.Equal(2, list.Size())
+
+	elements = elements[:2]
+
+	for i := 0; i < len(elements); i++ {
+		item, _ := list.Get(i)
+		assert.Equal(elements[i], item)
+	}
+}
