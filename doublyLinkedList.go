@@ -29,6 +29,20 @@ func (d *DoublyLinkedList) Items() []Any {
 	return items
 }
 
+func (d *DoublyLinkedList) Get(id int) (Any, error) {
+	if d.size == 0 || id >= d.size {
+		return nil, fmt.Errorf("index out of range")
+	}
+
+	currentNode := d.Head
+
+	for i := 0; i < id; i++ {
+		currentNode = currentNode.Next
+	}
+
+	return currentNode.Value, nil
+}
+
 func (d *DoublyLinkedList) Append(n *Node) {
 	d.mutex.Lock()
 	defer d.incrementSize()
@@ -49,16 +63,17 @@ func (d *DoublyLinkedList) Append(n *Node) {
 	currentNode.Next = n
 }
 
-func (d *DoublyLinkedList) Get(id int) (Any, error) {
-	if d.size == 0 || id >= d.size {
-		return nil, fmt.Errorf("index out of range")
+func (d *DoublyLinkedList) Prepend(n *Node) {
+	d.mutex.Lock()
+	defer d.incrementSize()
+	defer d.mutex.Unlock()
+
+	if d.size == 0 {
+		d.Head = n
+		return
 	}
 
-	currentNode := d.Head
-
-	for i := 0; i < id; i++ {
-		currentNode = currentNode.Next
-	}
-
-	return currentNode.Value, nil
+	n.Next = d.Head
+	d.Head.Previous = n
+	d.Head = n
 }

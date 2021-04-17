@@ -44,3 +44,19 @@ func TestDLLGet(t *testing.T) {
 	assert.Nil(item)
 	assert.Error(err)
 }
+
+func TestDLLPrepend(t *testing.T) {
+	assert := assert.New(t)
+	var list DoublyLinkedList
+
+	list.Prepend(&Node{Value: 1})
+	item, _ := list.Get(0)
+	assert.Equal(1, item)
+
+	list.Prepend(&Node{Value: 0})
+	item, _ = list.Get(0)
+	assert.Equal(0, item)
+
+	item, _ = list.Get(1)
+	assert.Equal(1, item)
+}
