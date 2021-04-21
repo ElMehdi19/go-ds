@@ -1,7 +1,7 @@
 package ds
 
 import (
-	"sync"
+	// "sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -14,37 +14,12 @@ func TestSLLAppend(t *testing.T) {
 	elements := []Any{1, 9, 9, 8}
 	seedList(&list, elements)
 
-	assert.Equal(len(elements), list.Size)
+	assert.Equal(len(elements), list.Size())
 
 	items := list.Items()
 
 	for i := 0; i < len(items); i++ {
 		assert.Equal(elements[i], items[i])
-	}
-}
-
-func TestSLLAppendAsync(t *testing.T) {
-	assert := assert.New(t)
-	list := SinglyLinkedList{}
-	elements := []int{1, 2, 3, 4}
-
-	wg := &sync.WaitGroup{}
-	wg.Add(len(elements))
-
-	for _, element := range elements {
-		go func(element int, wg *sync.WaitGroup) {
-			list.Append(&Node{Value: element})
-			wg.Done()
-		}(element, wg)
-	}
-
-	wg.Wait()
-
-	assert.Equal(len(elements), list.Size)
-
-	items := list.Items()
-	for i := 0; i < len(items); i++ {
-		assert.Equal(len(elements), list.Size)
 	}
 }
 
@@ -60,7 +35,7 @@ func TestSLLDelete(t *testing.T) {
 		assert.Equal(len(elements), list.Size)
 
 		items := list.Items()
-		for i := 0; i < list.Size; i++ {
+		for i := 0; i < list.Size(); i++ {
 			assert.Equal(elements[i], items[i])
 		}
 	}
@@ -82,10 +57,10 @@ func TestSLLRemove(t *testing.T) {
 
 	list.Remove(3)
 	elements = []Any{1, 4}
-	assert.Equal(len(elements), list.Size)
+	assert.Equal(len(elements), list.Size())
 
 	items := list.Items()
-	for i := 0; i < list.Size; i++ {
+	for i := 0; i < list.Size(); i++ {
 		assert.Equal(elements[i], items[i])
 	}
 
@@ -96,7 +71,7 @@ func TestSLLRemove(t *testing.T) {
 	}
 
 	list.Remove(3)
-	assert.Equal(1, list.Size)
+	assert.Equal(1, list.Size())
 	assert.Equal(4, list.Head.Value)
 }
 
@@ -105,7 +80,7 @@ func TestSSLPrepend(t *testing.T) {
 	list := SinglyLinkedList{}
 
 	testFn := func(list *SinglyLinkedList, size, value int) {
-		assert.Equal(size, list.Size)
+		assert.Equal(size, list.Size())
 
 		assert.Equal(value, list.Head.Value)
 	}
@@ -124,11 +99,11 @@ func TestSSLReverse(t *testing.T) {
 	seedList(&list, elements)
 
 	list.Reverse()
-	assert.Equal(4, list.Size)
+	assert.Equal(4, list.Size())
 
 	items := list.Items()
 	elements = []Any{4, 3, 2, 1}
-	for i := 0; i < list.Size; i++ {
+	for i := 0; i < list.Size(); i++ {
 		assert.Equal(elements[i], items[i])
 	}
 }
@@ -139,7 +114,7 @@ func TestSSLClear(t *testing.T) {
 	seedList(&list, []Any{1, 2, 3, 4})
 	list.Clear()
 
-	assert.Equal(0, list.Size)
+	assert.Equal(0, list.Size())
 	assert.Nil(list.Head, "list.Head still points to a node")
 }
 
@@ -151,10 +126,10 @@ func TestSLLUnique(t *testing.T) {
 	list.Unique()
 
 	elements = []Any{3, 1, 8, 0}
-	assert.Equal(len(elements), list.Size)
+	assert.Equal(len(elements), list.Size())
 
 	items := list.Items()
-	for i := 0; i < list.Size; i++ {
+	for i := 0; i < list.Size(); i++ {
 		assert.Equal(elements[i], items[i])
 	}
 }
@@ -167,22 +142,22 @@ func TestSLLSwap(t *testing.T) {
 
 	// test valid swap
 	list.Swap(1, 3)
-	assert.Equal(len(elements), list.Size)
+	assert.Equal(len(elements), list.Size())
 
 	items := list.Items()
 	elements = []Any{1, 4, 3, 2}
 
-	for i := 0; i < list.Size; i++ {
+	for i := 0; i < list.Size(); i++ {
 		assert.Equal(elements[i], items[i])
 	}
 
 	// test swap head with tail
 	list.Swap(0, 3)
 	elements = []Any{2, 4, 3, 1}
-	assert.Equal(len(elements), list.Size)
+	assert.Equal(len(elements), list.Size())
 
 	items = list.Items()
-	for i := 0; i < list.Size; i++ {
+	for i := 0; i < list.Size(); i++ {
 		assert.Equal(elements[i], items[i])
 	}
 
@@ -191,12 +166,12 @@ func TestSLLSwap(t *testing.T) {
 
 	// test swap where 1st index > 2nd index
 	list.Swap(3, 1)
-	assert.Equal(len(elements), list.Size)
+	assert.Equal(len(elements), list.Size())
 
 	items = list.Items()
 	elements = []Any{2, 1, 3, 4}
 
-	for i := 0; i < list.Size; i++ {
+	for i := 0; i < list.Size(); i++ {
 		assert.Equal(elements[i], items[i])
 	}
 }

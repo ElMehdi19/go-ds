@@ -8,16 +8,20 @@ import (
 
 type SinglyLinkedList struct {
 	Head  *Node
-	Size  int
+	size  int
 	mutex sync.Mutex
 }
 
 func (s *SinglyLinkedList) incrementSize() {
-	s.Size += 1
+	s.size += 1
 }
 
 func (s *SinglyLinkedList) decrementSize() {
-	s.Size -= 1
+	s.size -= 1
+}
+
+func (s *SinglyLinkedList) Size() int {
+	return s.size
 }
 
 func (s *SinglyLinkedList) isEmpty() bool {
@@ -58,7 +62,7 @@ func (s *SinglyLinkedList) Append(n *Node) {
 func (s *SinglyLinkedList) Delete(index int) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-	if index >= s.Size {
+	if index >= s.size {
 		return errors.New("index out of range")
 	}
 
@@ -130,7 +134,7 @@ func (s *SinglyLinkedList) Prepend(n *Node) {
 
 // Reverse reverses the nodes order in the list
 func (s *SinglyLinkedList) Reverse() {
-	if s.Size <= 1 {
+	if s.size <= 1 {
 		return
 	}
 
@@ -153,7 +157,7 @@ func (s *SinglyLinkedList) Clear() {
 		return
 	}
 	s.Head = nil
-	s.Size = 0
+	s.size = 0
 }
 
 // Unique removes all the duplicated nodes
@@ -161,7 +165,7 @@ func (s *SinglyLinkedList) Clear() {
 func (s *SinglyLinkedList) Unique() {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-	if s.Size <= 1 {
+	if s.size <= 1 {
 		return
 	}
 	visited := make(map[interface{}]bool)
@@ -185,10 +189,10 @@ func (s *SinglyLinkedList) Unique() {
 func (s *SinglyLinkedList) Swap(i, j int) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-	if i >= s.Size || j >= s.Size {
+	if i >= s.size || j >= s.size {
 		return fmt.Errorf("index out of range")
 	}
-	if i == j || s.Size <= 1 {
+	if i == j || s.size <= 1 {
 		return nil
 	}
 
@@ -226,37 +230,10 @@ func (s *SinglyLinkedList) Swap(i, j int) error {
 
 	return nil
 
-	// for currentNodeX != nil && xIndex != i {
-	// 	previousNodeX = currentNodeX
-	// 	currentNodeX = currentNodeX.Next
-	// 	xIndex++
-	// }
-
-	// if currentNodeX == nil {
-	// 	return
-	// }
-
-	// currentNodeY := s.Head
-	// var previousNodeY *Node
-	// yIndex := 0
-
-	// for currentNodeY != nil && yIndex != j {
-	// 	previousNodeY = currentNodeY
-	// 	currentNodeY = currentNodeY.Next
-	// 	yIndex++
-	// }
-
-	// if currentNodeY == nil {
-	// 	return
-	// }
-
-	// currentNodeX.Next, currentNodeY.Next = currentNodeY.Next, currentNodeX.Next
-	// previousNodeX.Next = currentNodeY
-	// previousNodeY.Next = currentNodeX
 }
 
 func (s *SinglyLinkedList) Get(id int) (Any, error) {
-	if s.Size == 0 || id >= s.Size {
+	if s.size == 0 || id >= s.size {
 		return nil, fmt.Errorf("index out of range")
 	}
 
