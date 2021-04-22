@@ -50,3 +50,20 @@ func TestBSTPreOrderTraversal(t *testing.T) {
 		assert.Equal(elements[i], items[i])
 	}
 }
+
+func TestBSTPostOrderTraversal(t *testing.T) {
+	assert := assert.New(t)
+	var tree BST
+
+	elements := []int{5, 2, 8, 1, 3}
+	seedBST(&tree, elements)
+
+	assert.NotNil(tree.Root)
+	elements = []int{1, 3, 2, 8, 5}
+	items := tree.PostOrderTraversal(tree.Root)
+
+	assert.Equal(len(elements), len(items))
+	for i := 0; i < len(items); i++ {
+		assert.Equal(elements[i], items[i])
+	}
+}
