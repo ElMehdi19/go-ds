@@ -24,7 +24,7 @@ func (s *SinglyLinkedList) Size() int {
 	return s.size
 }
 
-func (s *SinglyLinkedList) isEmpty() bool {
+func (s *SinglyLinkedList) IsEmpty() bool {
 	return s.Head == nil
 }
 
@@ -43,7 +43,7 @@ func (s *SinglyLinkedList) Append(n *Node) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	defer s.incrementSize()
-	if s.isEmpty() {
+	if s.IsEmpty() {
 		s.Head = n
 		return
 	}
@@ -89,7 +89,7 @@ func (s *SinglyLinkedList) Delete(index int) error {
 func (s *SinglyLinkedList) Remove(value Any) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-	if s.isEmpty() {
+	if s.IsEmpty() {
 		return
 	}
 
@@ -123,7 +123,7 @@ func (s *SinglyLinkedList) Prepend(n *Node) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	defer s.incrementSize()
-	if s.isEmpty() {
+	if s.IsEmpty() {
 		s.Head = n
 		return
 	}
@@ -153,7 +153,7 @@ func (s *SinglyLinkedList) Reverse() {
 
 // Clear removes all the list elements
 func (s *SinglyLinkedList) Clear() {
-	if s.isEmpty() {
+	if s.IsEmpty() {
 		return
 	}
 	s.Head = nil

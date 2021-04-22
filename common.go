@@ -15,6 +15,8 @@ type List interface {
 	Delete(int) error
 	Remove(Any)
 	Swap(i, j int) error
+	IsEmpty() bool
+	Clear()
 }
 
 func seedList(list List, elements []Any) {

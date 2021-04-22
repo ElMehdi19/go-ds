@@ -194,3 +194,16 @@ func (d *DoublyLinkedList) Swap(i, j int) error {
 
 	return nil
 }
+
+func (d *DoublyLinkedList) IsEmpty() bool {
+	return d.Head == nil
+}
+
+func (d *DoublyLinkedList) Clear() {
+	if d.IsEmpty() {
+		return
+	}
+
+	d.Head = nil
+	d.size = 0
+}

@@ -146,3 +146,19 @@ func TestDLLSwap(t *testing.T) {
 		assert.Equal(elements[i], items[i])
 	}
 }
+
+func TestDLLClear(t *testing.T) {
+	assert := assert.New(t)
+
+	var list DoublyLinkedList
+	seedList(&list, []Any{1, 9, 9, 8})
+
+	assert.NotNil(list.Head)
+	assert.False(list.IsEmpty())
+	assert.Equal(4, list.Size())
+
+	list.Clear()
+	assert.Nil(list.Head)
+	assert.True(list.IsEmpty())
+	assert.Zero(list.Size())
+}
