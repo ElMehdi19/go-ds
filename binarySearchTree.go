@@ -57,3 +57,14 @@ func (t *BST) InOrderTraversal(n *BSTNode) []int {
 
 	return values
 }
+
+func (t *BST) PreOrderTraversal(n *BSTNode) []int {
+	if n == nil {
+		return nil
+	}
+
+	values := []int{n.Value}
+	values = append(values, t.PreOrderTraversal(n.Left)...)
+	values = append(values, t.PreOrderTraversal(n.Right)...)
+	return values
+}
