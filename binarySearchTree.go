@@ -1,6 +1,9 @@
 package ds
 
-import "sync"
+import (
+	"math"
+	"sync"
+)
 
 type BSTNode struct {
 	Value  int
@@ -79,4 +82,45 @@ func (t *BST) PostOrderTraversal(n *BSTNode) []int {
 	values = append(values, t.PostOrderTraversal(n.Right)...)
 	values = append(values, n.Value)
 	return values
+}
+
+func (t *BST) BFS(n *BSTNode) []int {
+	if n == nil {
+		return nil
+	}
+
+	var nodes []int
+	var queue []*BSTNode
+
+	pop := func() *BSTNode {
+		top := queue[0]
+		queue = queue[1:]
+		return top
+	}
+
+	queue = append(queue, n)
+
+	for len(queue) != 0 {
+		qTop := pop()
+		nodes = append(nodes, qTop.Value)
+
+		if qTop.Left != nil {
+			queue = append(queue, qTop.Left)
+		}
+
+		if qTop.Right != nil {
+			queue = append(queue, qTop.Right)
+		}
+	}
+
+	return nodes
+}
+
+func (t *BST) Height(n *BSTNode) int {
+	if n == nil {
+		return 0
+	}
+
+	currentHeight := 1 + math.Max(float64(t.Height(n.Left)), float64(t.Height(n.Right)))
+	return int(currentHeight)
 }
