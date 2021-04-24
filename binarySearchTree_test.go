@@ -83,3 +83,15 @@ func TestBSTBreadFirstSearch(t *testing.T) {
 		assert.Equal(elements[i], items[i])
 	}
 }
+
+func TestBSTHeight(t *testing.T) {
+	assert := assert.New(t)
+	var tree BST
+
+	assert.Zero(tree.Height(tree.Root))
+
+	elements := []int{5, 2, 8, 1, 3}
+	seedBST(&tree, elements)
+
+	assert.Equal(3, tree.Height(tree.Root))
+}
