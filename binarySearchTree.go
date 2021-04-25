@@ -124,3 +124,10 @@ func (t *BST) Height(n *BSTNode) int {
 	currentHeight := 1 + math.Max(float64(t.Height(n.Left)), float64(t.Height(n.Right)))
 	return int(currentHeight)
 }
+
+func (t *BST) Clear() {
+	if t.Root == nil {
+		return
+	}
+	t.Root = nil
+}

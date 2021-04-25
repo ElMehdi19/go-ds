@@ -7,7 +7,7 @@
 - [x] Singly linked list
 - [x] Stack
 - [x] Queue
-- Doubly linked list
-- Tree
+- [x] Doubly linked list
+- [x] Tree
 - Graph
 - Heap
