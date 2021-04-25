@@ -94,4 +94,13 @@ func TestBSTHeight(t *testing.T) {
 	seedBST(&tree, elements)
 
 	assert.Equal(3, tree.Height(tree.Root))
+
+	elements = []int{4, 7, 9}
+	seedBST(&tree, elements)
+
+	assert.Equal(4, tree.Height(tree.Root))
+
+	elements = []int{0, 2}
+	seedBST(&tree, elements)
+	assert.Equal(4, tree.Height(tree.Root))
 }
