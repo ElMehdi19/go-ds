@@ -2,6 +2,7 @@ package ds
 
 import (
 	"math"
+	"sort"
 	"sync"
 )
 
@@ -130,4 +131,30 @@ func (t *BST) Clear() {
 		return
 	}
 	t.Root = nil
+}
+
+func (t *BST) MinBSTFromArray(arr []int) *BSTNode {
+	// items := arr
+	if len(arr) == 0 {
+		return nil
+	}
+
+	sort.Slice(arr, func(i, j int) bool {
+		return arr[i] < arr[j]
+	})
+
+	return t.minbstfromarray(arr, 0, len(arr)-1)
+}
+
+func (t *BST) minbstfromarray(arr []int, start, end int) *BSTNode {
+	if start > end {
+		return nil
+	}
+
+	mid := (end + start) / 2
+	parent := BSTNode{Value: arr[mid]}
+	parent.Left = t.minbstfromarray(arr, start, mid-1)
+	parent.Right = t.minbstfromarray(arr, mid+1, end)
+
+	return &parent
 }

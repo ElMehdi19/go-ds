@@ -1,6 +1,7 @@
 package ds
 
 import (
+	"fmt"
 	"sort"
 	"testing"
 
@@ -103,4 +104,35 @@ func TestBSTHeight(t *testing.T) {
 	elements = []int{0, 2}
 	seedBST(&tree, elements)
 	assert.Equal(4, tree.Height(tree.Root))
+}
+
+func TestMinBSTFromArray(t *testing.T) {
+	assert := assert.New(t)
+	items := []int{2, 4, 1, 9, 5, 8}
+	var tree BST
+
+	root := tree.MinBSTFromArray(items)
+	assert.NotNil(root)
+
+	assert.Equal(3, tree.Height(root))
+
+	inOrder := tree.InOrderTraversal(root)
+	assert.Equal("[1 2 4 5 8 9]", fmt.Sprintf("%v", inOrder), inOrder)
+
+	preOrder := tree.PreOrderTraversal(root)
+	assert.Equal("[4 1 2 8 5 9]", fmt.Sprintf("%v", preOrder), preOrder)
+
+	postOrder := tree.PostOrderTraversal(root)
+	assert.Equal("[2 1 5 9 8 4]", fmt.Sprintf("%v", postOrder), postOrder)
+
+	/* [1, 2, 4, 5, 8, 9]
+
+		 4
+	   /  \
+	  1    8
+	   \  / \
+	    2 5 9
+
+	*/
+
 }
