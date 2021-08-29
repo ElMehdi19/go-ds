@@ -1,4 +1,4 @@
-module github.com/ElMehdi19/go-ds
+module github.com/elmehdi19/go-ds
 
 go 1.13
 
